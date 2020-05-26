@@ -3,7 +3,7 @@ const Test = require('../../models/test-model');
 
 // Apply for test  { test application => none }
 const applyForTest = function (req, res) {
-    const test = Test(req.body);
+    const test = new Test(req.body);
     test.save().then(() => {
         res.status(200).send()
     }).catch((error) => {
