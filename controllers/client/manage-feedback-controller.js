@@ -4,6 +4,7 @@ const Feedback = require('../../models/feedback-model');
 const getFeedback = async function (req, res) {
     try {
         await req.client.populate('feedback').execPopulate();
+        console.log(req.client.feedback);
         const feedback = req.client.feedback;
         if (!feedback) {
             return res.status(404).send();

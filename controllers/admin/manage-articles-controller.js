@@ -55,7 +55,7 @@ const getManyArticles = async function (req, res) {
     try {
         const limit = req.query.limit ? +req.query.limit : undefined;
         const skip = req.query.limit && req.query.skip ? +req.query.skip : undefined;
-        const articles = await Article.find({}).limit(limit).skip(skip).sort({createdAt: 'asc'});
+        const articles = await Article.find({}).limit(limit).skip(skip).sort({createdAt: 'desc'});
         res.status(200).send(articles);
     } catch (error) {
         res.status(400).send();

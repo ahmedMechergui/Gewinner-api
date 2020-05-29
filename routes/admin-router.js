@@ -10,6 +10,8 @@ const manageJoinUsController = require('../controllers/admin/manage-join-us-cont
 const manageArticlesController = require('../controllers/admin/manage-articles-controller');
 const manageEventsController = require('../controllers/admin/manage-events-controller');
 const manageTeamMembersController = require('../controllers/admin/manage-team-members-controller');
+const manageServicesController = require('../controllers/client/manage-services-controller');
+const manageContactUsController = require('../controllers/visitor/manage-contact-us-controller');
 
 const router = new express.Router();
 
@@ -161,4 +163,47 @@ router.patch('/members/:id',
 
 // delete a team member
 router.delete('/members/:id', authAdmin, manageTeamMembersController.deleteTeamMember);
+
+/* =============================
+    Manage services
+   =============================*/
+
+// get maintenance requests
+/*
+      /maintenance  => get all maintenance requests
+     /maintenance?fixed=true  => get fixed maintenance requests
+    /maintenance?fixed=false  => get unfixed maintenance requests
+
+ */
+router.get('/services/maintenance', authAdmin, manageServicesController.getMaintenanceRequests);
+
+// set a maintenance request as fixed
+router.post('/services/maintenance/fixed/:id',
+    authAdmin,
+    manageServicesController.setMaintenanceRequestFixed);
+
+
+// Get scheduled quality controls
+/*
+    /services/qualityControl  , Get all scheduled quality controls for all clients
+    /services/qualityControl?days=X  , Get scheduled quality controls for all clients for next X days
+ */
+router.get('/services/qualityControl', authAdmin, manageServicesController.getQualityControlsByAdmin);
+
+// get on hold training requests
+router.get('/services/training', authAdmin, manageServicesController.getTrainingSessionRequests);
+
+// Set Training session requests as not in hold anymore
+router.post('/services/training/:id', authAdmin, manageServicesController.setTrainingSessionAsDone);
+
+/* =============================
+    Manage contact us messages
+   =============================*/
+
+// get all contact us messages
+router.get('/contacts', authAdmin, manageContactUsController.getAllContactUs);
+
+// delete a contact us message
+router.delete('/contacts/:id', authAdmin, manageContactUsController.deleteContactUsMessage);
+
 module.exports = router;

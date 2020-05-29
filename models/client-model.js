@@ -59,6 +59,18 @@ clientSchema.virtual('feedback',{
     foreignField : 'owner'
 });
 
+clientSchema.virtual('maintenanceRequest',{
+    ref : 'MaintenanceRequest',
+    localField : '_id',
+    foreignField : 'owner'
+});
+
+clientSchema.virtual('qualityControl',{
+    ref : 'QualityControl',
+    localField : '_id',
+    foreignField : 'owner'
+});
+
 // Hash password before saving a client
 clientSchema.pre('save', async function (next) {
     const client = this;
