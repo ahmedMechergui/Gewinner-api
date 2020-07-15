@@ -3,7 +3,8 @@ const Client = require('../../models/client-model');
 
 // Sign up a new Client { client info => client info ,token }
 const signUp = async function (req, res) {
-    const client = new Client(req.body);
+    let client;
+    client = new Client(req.body);
     try {
         const token = await client.generateAuthToken();
         client.tokens.push({token});

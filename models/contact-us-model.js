@@ -20,7 +20,7 @@ const contactUsSchema = new mongoose.Schema({
     },
     subject: {
         type: String,
-        required: true,
+        default: 'No subject',
         trim: true
     },
     message: {
@@ -29,6 +29,14 @@ const contactUsSchema = new mongoose.Schema({
         trim: true
     }
 }, {timestamps: true});
+
+contactUsSchema.methods.toJSON = function () {
+    const contactObject = this;
+    contactObject.id = contactObject._id;
+    delete contactObject._id;
+    delete contactObject.__v;
+    return contactObject;
+}
 
 ContactUs = mongoose.model('ContactUs', contactUsSchema);
 module.exports = ContactUs;

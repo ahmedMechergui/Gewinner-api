@@ -13,11 +13,11 @@ const router = new express.Router();
     Client sign-up-in-out
    =============================*/
 
-// Sign up a new Client
-router.post('/clients', signController.signUp);
-
 // Sign in a client
 router.post('/clients/login', signController.signIn);
+
+// Sign up a new Client
+router.post('/clients', signController.signUp);
 
 // Sign out a client
 router.post('/clients/logout', authClient, signController.signOut);
@@ -31,7 +31,7 @@ router.post('/clients/logout', authClient, signController.signOut);
 router.delete('/clients', authClient, manageAccountController.deleteAccount);
 
 // Update currently logged account
-router.patch('/clients', authClient, manageAccountController.updateAccount);
+router.put('/clients', authClient, manageAccountController.updateAccount);
 
 /* =============================
     Manage feedback

@@ -15,16 +15,23 @@ const accessorieSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    imageURL: {
+    imageURL: [{
         type: String,
         required: true
-    },
+    }],
     isAvailable: {
         type: Boolean,
         default: true
     }
 }, {timestamps: true});
 
+accessorieSchema.methods.toJSON = function () {
+const accessorieObject = this.toObject();
+delete accessorieObject.__v;
+return accessorieObject;
+}
+
 const Accessorie = mongoose.model('Accessorie',accessorieSchema);
+
 
 module.exports = Accessorie;

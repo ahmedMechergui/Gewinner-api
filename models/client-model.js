@@ -17,6 +17,12 @@ const clientSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    phone: {
+      required : false,
+        type : String,
+        trim : true,
+      default : ''
+    },
     email: {
         type: String,
         required: true,
@@ -53,22 +59,22 @@ const clientSchema = new mongoose.Schema({
     }]
 }, {timestamps: true});
 
-clientSchema.virtual('feedback',{
-    ref : 'Feedback',
-    localField : '_id',
-    foreignField : 'owner'
+clientSchema.virtual('feedback', {
+    ref: 'Feedback',
+    localField: '_id',
+    foreignField: 'owner'
 });
 
-clientSchema.virtual('maintenanceRequest',{
-    ref : 'MaintenanceRequest',
-    localField : '_id',
-    foreignField : 'owner'
+clientSchema.virtual('maintenanceRequest', {
+    ref: 'MaintenanceRequest',
+    localField: '_id',
+    foreignField: 'owner'
 });
 
-clientSchema.virtual('qualityControl',{
-    ref : 'QualityControl',
-    localField : '_id',
-    foreignField : 'owner'
+clientSchema.virtual('qualityControl', {
+    ref: 'QualityControl',
+    localField: '_id',
+    foreignField: 'owner'
 });
 
 // Hash password before saving a client
@@ -98,8 +104,7 @@ clientSchema.statics.findByCredentials = async function (email, password) {
 clientSchema.methods.generateAuthToken = async function () {
     const client = this;
     try {
-        const token = await jwt.sign({id: client.id}, '9ar9ouch', {expiresIn: '365d'})
-        return token;
+        return await jwt.sign({id: client.id}, '9ar9ouch');
     } catch (error) {
         return {error: 'Unable to generate authentication token!'}
     }
@@ -108,9 +113,12 @@ clientSchema.methods.generateAuthToken = async function () {
 // Delete unnecessary (for the client) fields from the client object returned to client
 clientSchema.methods.toJSON = function () {
     const userObject = this.toObject();
+    userObject.id = userObject._id;
+    delete userObject._id;
     delete userObject.password;
     delete userObject.tokens;
     delete userObject.isBanned;
+    delete userObject.__v;
     return userObject;
 }
 

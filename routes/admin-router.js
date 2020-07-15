@@ -58,7 +58,7 @@ router.post('/tests/validate/:id', authAdmin, testsManagementController.validate
 
 // Add accessorie
 router.post('/accessories', authAdmin,
-    manageAccessoriesController.uploadImage.single('image'),
+    manageAccessoriesController.uploadImage.array('image[]'),
     manageAccessoriesController.addAccessorie,
     manageAccessoriesController.addAccessorieErrorCatcher);
 

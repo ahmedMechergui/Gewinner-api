@@ -21,8 +21,8 @@ const trainingSessionRequestSchema = new mongoose.Schema({
         required : true
     },
     phone : {
-        type : Number,
-        required : true
+        type : String,
+        default : ''
     },
     isOnHold : {
         type : Boolean,

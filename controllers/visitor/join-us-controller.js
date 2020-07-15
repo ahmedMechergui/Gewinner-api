@@ -30,6 +30,7 @@ const apply = async function (req, res) {
         await joiner.save();
         res.status(200).send();
     } catch (error) {
+        console.log(error)
         res.status(400).send({error: error.toString()});
     }
 };

@@ -7,6 +7,14 @@ const TrainingSessionRequest = require('../../models/training-session-request-mo
 // Post a maintenance request { client,authToken => none }
 const addMaintenanceRequest = async function (req, res) {
     const owner = req.client._id;
+
+    // if the client already had training session request on hold he
+    // will not be allowed to make other requests
+    const requestOnHold = await MaintenanceRequest.findOne({clientID: owner.clientID, isFixed: false});
+    if (requestOnHold) {
+        return res.status(412).send();
+    }
+
     const maintenanceRequest = new MaintenanceRequest({owner});
     try {
         await maintenanceRequest.save();
@@ -46,7 +54,7 @@ const setMaintenanceRequestFixed = async function (req, res) {
 }
 
 // Add quarterly control years { client,authToken , added years => none }
-// !!! low quality code and barely working, don't touch it !!!
+// !!! bad quality code and barely working, don't touch it !!!
 const addQualityControlYears = async function (req, res) {
     try {
         await req.client.populate('qualityControl').execPopulate();
@@ -113,8 +121,8 @@ const getQualityControlsByAdmin = async function (req, res) {
         const timeWanted = new Date(timeNow + timeAhead).getTime();
 
         const qualityControls = await QualityControl.find();
-        const allSchedules = new Array();
-        const wantedSchedules = new Array();
+        const allSchedules = [];
+        const wantedSchedules = [];
 
         // We have multiple schedules arrays in multiple documents so parse them to create an
         // array with all our schedules objects
@@ -145,7 +153,7 @@ const getQualityControlsByAdmin = async function (req, res) {
     }
 }
 
-// Add a training session request { client,authToken , request body {hours , phone} => none }
+// Add a training session request { client,authToken , request body {hours} => none }
 const addTrainingSessionRequest = async function (req, res) {
 
     try {
@@ -159,6 +167,7 @@ const addTrainingSessionRequest = async function (req, res) {
         const trainingSessionRequest = new TrainingSessionRequest(
             {
                 ...req.body,
+                phone: req.client.phone,
                 name: req.client.name,
                 email: req.client.email,
                 clientID: req.client.clientID,

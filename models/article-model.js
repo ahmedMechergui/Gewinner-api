@@ -26,5 +26,13 @@ const articleSchema = new mongoose.Schema({
     }
 } , {timestamps : true});
 
+articleSchema.methods.toJSON = function () {
+const articleObject = this.toObject();
+articleObject.id = articleObject._id;
+delete articleObject._id;
+delete articleObject.__v;
+return articleObject;
+}
+
 const Article = mongoose.model('Article',articleSchema);
 module.exports = Article;

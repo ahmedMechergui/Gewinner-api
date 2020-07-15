@@ -24,7 +24,12 @@ const uploadImage = multer({
 // Add accessorie  { admin,authToken,accessorie => none }
 const addAccessorie = async function (req, res) {
     try {
-        const accessorie = new Accessorie({...req.body, imageURL: '/images/accessories/' + req.file.filename});
+        const imageURL = [];
+        // console.log(req.files);
+        req.files.forEach(file=>{
+            imageURL.push(file.path.replace('public\\','/'));
+        });
+        const accessorie = new Accessorie({...req.body,imageURL});
         await accessorie.save();
         res.status(200).send();
     } catch (error) {

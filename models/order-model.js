@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator').default;
 const orderSchema = new mongoose.Schema({
-    // Wheelchair
+//  Wheelchair
     steeringSystem: {
         type: Boolean
     },
@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
     mobileApp: {
         type: Boolean
     },
-// Safety
+//  Safety
     obstacleDetection: {
         type: Boolean
     },
@@ -65,7 +65,7 @@ const orderSchema = new mongoose.Schema({
     demo: {
         type: Boolean
     },
-// Client Nature , individual or organisation
+//  Client Nature , individual or organisation
     clientNature: {
         type: String,
         lowercase: true,
@@ -79,11 +79,10 @@ const orderSchema = new mongoose.Schema({
     },
     iEmail: {
         type: String,
-        required: true,
         trim: true,
         lowercase: true,
         validate(value) {
-            if (!validator.isEmail(value)) {
+            if (!validator.isEmail(value) && value!=='') {
                 throw new Error('Email is not valid!')
             }
         }
@@ -142,16 +141,15 @@ const orderSchema = new mongoose.Schema({
     },
     oEmail: {
         type: String,
-        required: true,
         trim: true,
         lowercase: true,
         validate(value) {
-            if (!validator.isEmail(value)) {
+            if (!validator.isEmail(value) && value!=='') {
                 throw new Error('Email is not valid!')
             }
         }
     }
-} , {timestamps : true});
+}, {timestamps: true});
 
 const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
