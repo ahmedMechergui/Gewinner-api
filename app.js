@@ -8,7 +8,7 @@ const clientRouter = require('./routes/client-router');
 const adminRouter = require('./routes/admin-router');
 const visitorRouter = require('./routes/visitor-router');
 
-
+const port = process.env.PORT || 3000;
 const app = express();
 app.use(logger('dev'));
 app.use(express.json());
@@ -24,4 +24,4 @@ app.use(clientRouter);
 app.use(adminRouter);
 app.use(visitorRouter);
 
-app.listen(3000);
+app.listen(port);
