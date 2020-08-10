@@ -102,11 +102,12 @@ const getQualityControlsByClient = async function (req, res) {
     try {
         await req.client.populate('qualityControl').execPopulate();
         let schedules = req.client.qualityControl[0].schedules;
+       const isValidated = req.client.qualityControl[0].isValidated
         const timeNow = new Date().getTime();
         schedules = schedules.filter((schedule) => {
             return new Date(schedule.schedule).getTime() > timeNow;
         });
-        res.status(200).send(schedules);
+        res.status(200).send({schedules , isValidated});
     } catch (error) {
         res.status(400).send();
     }

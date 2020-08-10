@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const databaseURI = process.env.URI || 'mongodb://127.0.0.1:27017/gewinner-api'
+const databaseURI =  'mongodb://127.0.0.1:27017/gewinner-api'
 // connecting to database
-mongoose.connect(databaseURI, {
+mongoose.connect('mongodb://127.0.0.1:27017/gewinner-api', {
     useNewUrlParser: true,
     useCreateIndex: true
 }).then(() => {

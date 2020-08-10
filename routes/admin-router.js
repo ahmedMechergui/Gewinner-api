@@ -43,6 +43,8 @@ router.patch('/admin', authAdmin, manageAdminAccountController.updateAccount);
 // Ban a client
 router.post('/banClient/:id', authAdmin, clientsManagementController.banClient);
 
+// Add client ID
+router.post('/clientID' , authAdmin, clientsManagementController.addClientID);
 
 /* =============================
     Manage tests

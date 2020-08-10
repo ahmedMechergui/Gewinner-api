@@ -6,6 +6,10 @@ const qualityControlSchema = new mongoose.Schema({
             type: Date
         }
     }],
+    isValidated : {
+        type : Boolean,
+        default : false
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
