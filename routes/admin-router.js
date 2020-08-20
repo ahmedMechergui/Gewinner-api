@@ -44,7 +44,7 @@ router.patch('/admin', authAdmin, manageAdminAccountController.updateAccount);
 router.post('/banClient/:id', authAdmin, clientsManagementController.banClient);
 
 // Add client ID
-router.post('/clientID' , authAdmin, clientsManagementController.addClientID);
+router.post('/clientID', authAdmin, clientsManagementController.addClientID);
 
 /* =============================
     Manage tests
@@ -78,6 +78,21 @@ router.patch('/accessories/:id', authAdmin,
 router.delete('/accessories/:id', authAdmin, manageAccessoriesController.deleteAccessorie);
 
 /* =============================
+    Manage accessories Order
+   =============================*/
+// Add Accessories Orders
+router.post('/accessories-order'  , manageAccessoriesController.addAccessorieOrder);
+
+// Get All Accessories Orders
+router.get('/accessories-order' , authAdmin , manageAccessoriesController.getAllAccessoriesOrders);
+
+// Delete Accessorie Order
+router.delete('/accessories-order/:id' ,authAdmin , manageAccessoriesController.deleteAccessorieOrder);
+
+// Change Accessorie Order Status
+router.post('/accessories-order-update/:id',authAdmin , manageAccessoriesController.changeOrderStatus);
+
+/* =============================
     Manage joins-us applications
    =============================*/
 
@@ -90,6 +105,11 @@ router.get('/join-us/all', authAdmin, manageJoinUsController.getAllApplications)
 // Get a join-us application
 router.get('/join-us/:id', authAdmin, manageJoinUsController.getOneApplication);
 
+// update a join-us application , patch route causing errors with angular so we used post
+router.post('/join-us/:id', authAdmin, manageJoinUsController.updateApplication);
+
+// delete a join-us application
+router.delete('/join-us/:id', authAdmin, manageJoinUsController.deleteApplication);
 /* =============================
     Manage Articles
    =============================*/
@@ -157,7 +177,7 @@ router.get('/members/all', manageTeamMembersController.getAllTeamMembers);
 router.get('/members/:id', authAdmin, manageTeamMembersController.getTeamMember);
 
 // Update a team member
-router.patch('/members/:id',
+router.post('/members-update/:id',
     authAdmin,
     manageTeamMembersController.uploadImage.single('image'),
     manageTeamMembersController.updateTeamMember,

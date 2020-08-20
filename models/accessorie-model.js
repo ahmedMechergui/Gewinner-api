@@ -26,12 +26,14 @@ const accessorieSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 accessorieSchema.methods.toJSON = function () {
-const accessorieObject = this.toObject();
-delete accessorieObject.__v;
-return accessorieObject;
+    const accessorieObject = this.toObject();
+    accessorieObject.id = accessorieObject._id;
+    delete accessorieObject._id;
+    delete accessorieObject.__v;
+    return accessorieObject;
 }
 
-const Accessorie = mongoose.model('Accessorie',accessorieSchema);
+const Accessorie = mongoose.model('Accessorie', accessorieSchema);
 
 
 module.exports = Accessorie;

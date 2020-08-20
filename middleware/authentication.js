@@ -8,7 +8,7 @@ const authClient = async function (req, res, next) {
         const token = req.header('Authorization').replace('Bearer ', '');
         const decode = await jwt.verify(token, '9ar9ouch');
         const client = await Client.findOne({_id: decode.id, 'tokens.token': token});
-        if (client) {
+        if (client && !client.isBanned) {
             req.client = client;
             req.token = token;
             next();

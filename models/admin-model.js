@@ -73,8 +73,11 @@ adminSchema.statics.findByCredentials = async function (email, password) {
 // Delete unnecessary (for the admin) fields from the admin object returned to admin
 adminSchema.methods.toJSON = function () {
     const adminObject = this.toObject();
+    adminObject.id = adminObject._id;
+    delete adminObject._id;
     delete adminObject.password;
     delete adminObject.tokens;
+    delete adminObject.__v;
     return adminObject;
 }
 

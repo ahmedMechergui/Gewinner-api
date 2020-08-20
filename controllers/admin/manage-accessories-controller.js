@@ -1,6 +1,7 @@
 const multer = require('multer');
 
 const Accessorie = require('../../models/accessorie-model');
+const AccessorieOrder = require('../../models/accessorie-order-model');
 
 const fileStorage = multer.diskStorage({
     destination: ((req, file, callback) => {
@@ -25,11 +26,10 @@ const uploadImage = multer({
 const addAccessorie = async function (req, res) {
     try {
         const imageURL = [];
-        // console.log(req.files);
-        req.files.forEach(file=>{
-            imageURL.push(file.path.replace('public\\','/'));
+        req.files.forEach(file => {
+            imageURL.push(file.path.replace('public\\', '/'));
         });
-        const accessorie = new Accessorie({...req.body,imageURL});
+        const accessorie = new Accessorie({...req.body, imageURL});
         await accessorie.save();
         res.status(200).send();
     } catch (error) {
@@ -100,6 +100,54 @@ const deleteAccessorie = async function (req, res) {
     }
 }
 
+/* =============================
+    Manage accessories Orders
+   =============================*/
+
+// add accessorie-order {admin , authToken , accessorie-order => none }
+const addAccessorieOrder = async function (req, res) {
+    try {
+        const order = new AccessorieOrder(req.body);
+        await order.save();
+        res.status(200).send();
+    } catch (e) {
+        res.status(400).send(e);
+    }
+    console.log(req.body)
+}
+
+// Get all accessories orders {admin , authToken => accessories orders }
+const getAllAccessoriesOrders = async function (req, res) {
+    try {
+        const orders = await AccessorieOrder.find().sort({createdAt: 'asc'});
+        res.status(200).send(orders);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+}
+
+// Get all accessories orders {admin , authToken , accessorie's ID => none }
+const deleteAccessorieOrder = async function (req, res) {
+    try {
+        const deletedOrder = await AccessorieOrder.findByIdAndRemove(req.params.id);
+        const status = deletedOrder ? 200 : 404;
+        res.status(status).send();
+    } catch (e) {
+        res.status(400).send();
+    }
+}
+
+const changeOrderStatus = async function (req, res) {
+    try {
+        const updatedOrder = await AccessorieOrder.findByIdAndUpdate(req.params.id, {status: req.body.status});
+        const status = updatedOrder ? 200 : 404;
+        res.status(status).send();
+    } catch (e) {
+        res.status(400).send();
+    }
+}
+
+
 module.exports = {
     uploadImage,
     addAccessorie,
@@ -107,5 +155,9 @@ module.exports = {
     getOneAccessorie,
     getAllAccessories,
     deleteAccessorie,
-    updateAccessorie
+    updateAccessorie,
+    addAccessorieOrder,
+    getAllAccessoriesOrders,
+    deleteAccessorieOrder,
+    changeOrderStatus
 }

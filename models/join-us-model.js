@@ -32,8 +32,24 @@ const joinerSchema = new mongoose.Schema({
     motivation : {
         type : String,
         default : 'No motivation provided'
+    },
+    status : {
+        type : String,
+        default : 'pending'
+    },
+    interviewDate : {
+        type : Date,
+        default : null
     }
 },{timestamps:true});
+
+joinerSchema.methods.toJSON = function () {
+    const joinerObject = this.toObject();
+    joinerObject.id = joinerObject._id;
+    delete joinerObject._id;
+    delete joinerObject.__v;
+    return joinerObject;
+}
 
 const Joiner = mongoose.model('Joiner',joinerSchema);
 
