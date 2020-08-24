@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const validator = require('validator').default;
 
 const accessorieOrderSchema = new mongoose.Schema({
+    accessorieID : {
+      type : String,
+      default : null
+    },
     accessorieName: {
         type: String,
         required: true
@@ -66,6 +70,10 @@ const accessorieOrderSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    iCountry : {
+        type:String,
+        trim : true
+    },
 //  Organisation form
     oName: {
         type: String,
@@ -84,10 +92,6 @@ const accessorieOrderSchema = new mongoose.Schema({
         trim: true
     },
     oResponsibleName: {
-        type: String,
-        trim: true
-    },
-    oHandicap: {
         type: String,
         trim: true
     },
@@ -110,6 +114,10 @@ const accessorieOrderSchema = new mongoose.Schema({
                 throw new Error('Email is not valid!')
             }
         }
+    },
+    oCountry : {
+        type:String,
+        trim : true
     },
     oState: {
         type: String

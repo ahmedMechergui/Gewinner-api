@@ -13,7 +13,7 @@ const fileStorage = multer.diskStorage({
 })
 const uploadImage = multer({
     storage: fileStorage,
-    limits: {fileSize: 2000000},
+    limits: {fileSize: 10000000},
     fileFilter(req, file, callback) {
         if (!file.originalname.toLowerCase().match(/\.(jpg|jpeg|png|webp)/)) {
             return callback(new Error('File must be an image'));
@@ -60,6 +60,18 @@ const getOneAccessorie = async function (req, res) {
 const getAllAccessories = async function (req, res) {
     try {
         const accessories = await Accessorie.find().sort({createdAt: 'asc'});
+
+        for (const accessorie of accessories) {
+
+            // update last month orders
+            const dateLastMonth = new Date(new Date().getTime() - (30 * 24 * 3600000));
+            const count = await AccessorieOrder.countDocuments({
+                accessorieID: accessorie._id,
+                "createdAt": {"$gte": dateLastMonth}
+            });
+            accessorie.ordersThisMonth = count;
+        }
+
         res.status(200).send(accessories);
     } catch (error) {
         res.status(500).send();
@@ -68,7 +80,9 @@ const getAllAccessories = async function (req, res) {
 
 // Update accessorie  { admin,authToken,accessorie's ID , update body => updated accessorie }
 const updateAccessorie = async function (req, res) {
-    const updatesAllowed = ['name', 'description', 'price', 'isAvailable'];
+    const imageURL = [];
+    const updatesAllowed = ['name', 'description', 'price', 'isAvailable',
+        'availableQuantity', 'totalOrders', 'ordersThisMonth', 'imageURL'];
     const updatesRequested = Object.keys(req.body);
     const isValidUpdate = updatesRequested.every((update) => {
         return updatesAllowed.includes(update);
@@ -76,8 +90,11 @@ const updateAccessorie = async function (req, res) {
     if (!isValidUpdate) {
         return res.status(400).send({error: 'update not valid'});
     }
-    if (req.file) {
-        req.body.imageURL = '/images/accessories/' + req.file.filename
+    if (req.files && req.files.length > 0) {
+        req.files.forEach(file => {
+            imageURL.push(file.path.replace('public\\', '/'));
+        });
+        req.body.imageURL = imageURL;
     }
     try {
         const updatedAccessorie = await Accessorie.findByIdAndUpdate(req.params.id, req.body, {
@@ -86,7 +103,7 @@ const updateAccessorie = async function (req, res) {
         });
         updatedAccessorie ? res.status(200).send(updatedAccessorie) : res.status(404).send();
     } catch (error) {
-        res.status(400).send();
+        res.status(400).send(error);
     }
 }
 
@@ -108,6 +125,11 @@ const deleteAccessorie = async function (req, res) {
 const addAccessorieOrder = async function (req, res) {
     try {
         const order = new AccessorieOrder(req.body);
+        const quantity = order.quantity;
+        await Accessorie.findOneAndUpdate({_id: order.accessorieID}, {
+            $inc: {'totalOrders': quantity},
+            $inc: {'availableQuantity': -quantity}
+        }).exec();
         await order.save();
         res.status(200).send();
     } catch (e) {

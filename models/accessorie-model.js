@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Order = require('./accessorie-order-model');
 
 const accessorieSchema = new mongoose.Schema({
     name: {
@@ -22,6 +23,18 @@ const accessorieSchema = new mongoose.Schema({
     isAvailable: {
         type: Boolean,
         default: true
+    },
+    availableQuantity: {
+        type: Number,
+        default: Infinity
+    },
+    totalOrders: {
+        type: Number,
+        default: 0
+    },
+    ordersThisMonth: {
+        type: Number,
+        default: 0
     }
 }, {timestamps: true});
 

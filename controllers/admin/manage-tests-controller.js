@@ -1,7 +1,7 @@
 const Test = require('../../models/test-model');
 
 // Validate test  { admin,authToken,test ID => none }
-const validateTest = async function (req, res)  {
+const validateTest = async function (req, res) {
     try {
         const testID = req.params.id;
         const test = await Test.findById(testID);
@@ -16,4 +16,13 @@ const validateTest = async function (req, res)  {
     }
 };
 
-module.exports = {validateTest};
+const getAllTests = async function (req, res) {
+  try {
+      const tests = await Test.find({}).sort({createdAt : 'asc'});
+      res.status(200).send(tests);
+  }catch (e) {
+      res.status(400).send();
+  }
+}
+
+module.exports = {validateTest , getAllTests};

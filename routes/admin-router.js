@@ -50,6 +50,9 @@ router.post('/clientID', authAdmin, clientsManagementController.addClientID);
     Manage tests
    =============================*/
 
+// Get all tests
+router.get('/tests' , authAdmin , testsManagementController.getAllTests);
+
 // Validate a test
 router.post('/tests/validate/:id', authAdmin, testsManagementController.validateTest);
 
@@ -70,8 +73,8 @@ router.get('/accessories/:id', manageAccessoriesController.getOneAccessorie);
 // Get all accessories  { none => accessories }
 router.get('/accessories', manageAccessoriesController.getAllAccessories);
 // Update Accessorie
-router.patch('/accessories/:id', authAdmin,
-    manageAccessoriesController.uploadImage.single('image'),
+router.post('/accessories-update/:id', authAdmin,
+    manageAccessoriesController.uploadImage.array('image[]'),
     manageAccessoriesController.updateAccessorie,
     manageAccessoriesController.addAccessorieErrorCatcher);
 // Delete accessorie
