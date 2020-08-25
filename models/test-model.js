@@ -7,6 +7,10 @@ const testSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    clientNature: {
+        type: String,
+        default: 'individual'
+    },
     email: {
         type: String,
         unique: true,
@@ -39,11 +43,30 @@ const testSchema = new mongoose.Schema({
         trim: true,
         lowercase: true
     },
+    scheduledDate: {
+        type: Date,
+        default: null
+    },
+    status: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        default: 'pending',
+        enum: ['pending', 'rejected', 'tested', 'scheduled']
+    },
     isValidated: {
         type: Boolean,
         default: false
     }
 }, {timestamps: true});
+
+testSchema.methods.toJSON = function () {
+    const testObject = this.toObject();
+    testObject.id = testObject._id;
+    delete testObject._id;
+    delete testObject.__v;
+    return testObject;
+}
 
 const Test = mongoose.model('Test', testSchema);
 module.exports = Test;

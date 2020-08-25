@@ -51,11 +51,16 @@ router.post('/clientID', authAdmin, clientsManagementController.addClientID);
    =============================*/
 
 // Get all tests
-router.get('/tests' , authAdmin , testsManagementController.getAllTests);
+router.get('/tests', authAdmin, testsManagementController.getAllTests);
 
-// Validate a test
+// Validate test
 router.post('/tests/validate/:id', authAdmin, testsManagementController.validateTest);
 
+// Update Test
+router.post('/tests/update/:id', authAdmin, testsManagementController.updateTest);
+
+// Delete Test
+router.delete('/tests/:id' , authAdmin , testsManagementController.deleteTest);
 
 /* =============================
     Manage accessories
@@ -84,16 +89,16 @@ router.delete('/accessories/:id', authAdmin, manageAccessoriesController.deleteA
     Manage accessories Order
    =============================*/
 // Add Accessories Orders
-router.post('/accessories-order'  , manageAccessoriesController.addAccessorieOrder);
+router.post('/accessories-order', manageAccessoriesController.addAccessorieOrder);
 
 // Get All Accessories Orders
-router.get('/accessories-order' , authAdmin , manageAccessoriesController.getAllAccessoriesOrders);
+router.get('/accessories-order', authAdmin, manageAccessoriesController.getAllAccessoriesOrders);
 
 // Delete Accessorie Order
-router.delete('/accessories-order/:id' ,authAdmin , manageAccessoriesController.deleteAccessorieOrder);
+router.delete('/accessories-order/:id', authAdmin, manageAccessoriesController.deleteAccessorieOrder);
 
 // Change Accessorie Order Status
-router.post('/accessories-order-update/:id',authAdmin , manageAccessoriesController.changeOrderStatus);
+router.post('/accessories-order-update/:id', authAdmin, manageAccessoriesController.changeOrderStatus);
 
 /* =============================
     Manage joins-us applications
