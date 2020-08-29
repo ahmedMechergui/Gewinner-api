@@ -12,6 +12,7 @@ const manageEventsController = require('../controllers/admin/manage-events-contr
 const manageTeamMembersController = require('../controllers/admin/manage-team-members-controller');
 const manageServicesController = require('../controllers/client/manage-services-controller');
 const manageContactUsController = require('../controllers/visitor/manage-contact-us-controller');
+const manageMoovobrainOrders = require('../controllers/admin/manage-moovobrain-orders');
 
 const router = new express.Router();
 
@@ -46,6 +47,18 @@ router.post('/banClient/:id', authAdmin, clientsManagementController.banClient);
 // Add client ID
 router.post('/clientID', authAdmin, clientsManagementController.addClientID);
 
+/* =============================
+    Manage moovobrain orders
+   =============================*/
+
+// Get all moovobrain orders
+router.get('/moovobrain',authAdmin , manageMoovobrainOrders.getAllOrders);
+
+// Update moovobrain order status
+router.post('/moovobrain/:id',authAdmin , manageMoovobrainOrders.updateOrderStatus);
+
+// Remove moovobrain order
+router.delete('/moovobrain/:id',authAdmin,manageMoovobrainOrders.deleteOrder);
 /* =============================
     Manage tests
    =============================*/

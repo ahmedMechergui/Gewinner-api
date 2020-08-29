@@ -1,22 +1,36 @@
 const mongoose = require('mongoose');
 const validator = require('validator').default;
 const orderSchema = new mongoose.Schema({
+    status: {
+        type: String,
+        default: 'pending',
+        enum: ['pending', 'rejected', 'delivered']
+    },
+    price: {
+        type: Number,
+        default : 15000
+    },
 //  Wheelchair
     steeringSystem: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
     headset: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
     wheelchair: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
     mobileApp: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
 //  Safety
     obstacleDetection: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
     camera: {
         type: Boolean
@@ -32,7 +46,8 @@ const orderSchema = new mongoose.Schema({
     },
 //  Accessories
     securityBelt: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
     headrest: {
         type: Boolean
@@ -63,7 +78,8 @@ const orderSchema = new mongoose.Schema({
         type: Number
     },
     demo: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
 //  Client Nature , individual or organisation
     clientNature: {
@@ -82,7 +98,7 @@ const orderSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         validate(value) {
-            if (!validator.isEmail(value) && value!=='') {
+            if (!validator.isEmail(value) && value !== '') {
                 throw new Error('Email is not valid!')
             }
         }
@@ -144,12 +160,25 @@ const orderSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         validate(value) {
-            if (!validator.isEmail(value) && value!=='') {
+            if (!validator.isEmail(value) && value !== '') {
                 throw new Error('Email is not valid!')
             }
         }
     }
 }, {timestamps: true});
+
+orderSchema.methods.toJSON = function () {
+    const orderObject = this.toObject();
+    orderObject.id = orderObject._id;
+    delete orderObject._id;
+    delete orderObject.__v;
+    for (const property in orderObject) {
+        if (!orderObject[property] || orderObject[property].length === 0) {
+            delete orderObject[property];
+        }
+    }
+    return orderObject;
+}
 
 const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
