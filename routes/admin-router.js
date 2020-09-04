@@ -225,19 +225,33 @@ router.post('/services/maintenance/fixed/:id',
     authAdmin,
     manageServicesController.setMaintenanceRequestFixed);
 
+// Delete maintenance request
+router.delete('/services/maintenance/:id' , authAdmin , manageServicesController.deleteMaintenanceRequest)
+
+// Get scheduled quality controls
+router.get('/services/qualityControl', authAdmin, manageServicesController.getAllQualityControlsByAdmin);
 
 // Get scheduled quality controls
 /*
     /services/qualityControl  , Get all scheduled quality controls for all clients
     /services/qualityControl?days=X  , Get scheduled quality controls for all clients for next X days
  */
-router.get('/services/qualityControl', authAdmin, manageServicesController.getQualityControlsByAdmin);
+router.get('/services/nextQualityControl', authAdmin, manageServicesController.getQualityControlsByAdminForNextDays);
+
+// Validate or reject quality control request
+router.post('/services/qualityControl/:id',authAdmin , manageServicesController.validateQualityControlRequest);
+
+// Delete Quality control request
+router.delete('/services/qualityControl/:id' , authAdmin , manageServicesController.deleteQualityControl);
 
 // get on hold training requests
 router.get('/services/training', authAdmin, manageServicesController.getTrainingSessionRequests);
 
 // Set Training session requests as not in hold anymore
 router.post('/services/training/:id', authAdmin, manageServicesController.setTrainingSessionAsDone);
+
+// Delete Training session request
+router.delete('/services/training/:id' , authAdmin , manageServicesController.deleteTrainingSession);
 
 /* =============================
     Manage contact us messages

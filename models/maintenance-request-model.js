@@ -6,11 +6,23 @@ const maintenanceRequestSchema = new mongoose.Schema({
         required : true,
         ref : 'Client'
     },
-    isFixed : {
-        type : Boolean,
-        default : false
+    status : {
+        type : String,
+        default : 'pending'
+    },
+    type: {
+        type : String,
+        default : 'Maintenance'
     }
 }, {timestamps : true});
+
+maintenanceRequestSchema.methods.toJSON = function () {
+    const object = this.toObject();
+    object.id = object._id;
+    delete object._id;
+    delete object.__v;
+    return object;
+}
 
 const MaintenanceRequest = mongoose.model('MaintenanceRequest' , maintenanceRequestSchema);
 module.exports = MaintenanceRequest;

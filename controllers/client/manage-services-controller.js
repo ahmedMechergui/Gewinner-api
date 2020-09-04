@@ -10,7 +10,7 @@ const addMaintenanceRequest = async function (req, res) {
 
     // if the client already had training session request on hold he
     // will not be allowed to make other requests
-    const requestOnHold = await MaintenanceRequest.findOne({clientID: owner.clientID, isFixed: false});
+    const requestOnHold = await MaintenanceRequest.findOne({clientID: owner.clientID, status: 'pending'});
     if (requestOnHold) {
         return res.status(412).send();
     }
@@ -24,29 +24,22 @@ const addMaintenanceRequest = async function (req, res) {
     }
 }
 
-// Get all unfixed maintenance requests { admin,authToken => maintenance }
+// Get all maintenance requests { admin,authToken => maintenance }
 const getMaintenanceRequests = async function (req, res) {
     let maintenanceRequests;
     try {
-        let isFixed;
-        if (req.query.fixed) {
-            // if fixed is defined we return either fixed or unfixed maintenance requests
-            isFixed = req.query.fixed === 'true';
-            maintenanceRequests = await MaintenanceRequest.find({isFixed});
-        } else {
-            // if fixed is not defined we return all maintenance requests
-            maintenanceRequests = await MaintenanceRequest.find({});
-        }
+        // we return all maintenance requests
+        maintenanceRequests = await MaintenanceRequest.find({}).populate('owner').exec();
         res.status(200).send(maintenanceRequests);
     } catch (error) {
-        res.status(400).send()
+        res.status(400).send();
     }
 }
 
-// Set a maintenance request as fixed { admin,authToken , maintenance request's ID => none }
+// Set a maintenance request as fixed/rejected { admin,authToken , maintenance request's ID => none }
 const setMaintenanceRequestFixed = async function (req, res) {
     try {
-        const maintenanceRequest = await MaintenanceRequest.findByIdAndUpdate(req.params.id, {isFixed: true});
+        const maintenanceRequest = await MaintenanceRequest.findByIdAndUpdate(req.params.id, {status: req.body.status});
         maintenanceRequest ? res.status(200).send() : res.status(404).send();
     } catch (error) {
         res.status(400).send();
@@ -102,19 +95,19 @@ const getQualityControlsByClient = async function (req, res) {
     try {
         await req.client.populate('qualityControl').execPopulate();
         let schedules = req.client.qualityControl[0].schedules;
-       const isValidated = req.client.qualityControl[0].isValidated
+        const isValidated = req.client.qualityControl[0].isValidated
         const timeNow = new Date().getTime();
         schedules = schedules.filter((schedule) => {
             return new Date(schedule.schedule).getTime() > timeNow;
         });
-        res.status(200).send({schedules , isValidated});
+        res.status(200).send({schedules, isValidated});
     } catch (error) {
         res.status(400).send();
     }
 }
 
 // Get scheduled quality controls for all clients for next X days{ admin,authToken => none }
-const getQualityControlsByAdmin = async function (req, res) {
+const getQualityControlsByAdminForNextDays = async function (req, res) {
     try {
         // Add the current time to time ahead wanted to wanted the time period wanted
         const timeAhead = req.query.days && !isNaN(req.query.days) ? (+req.query.days) * 24 * 3600000 : 0;
@@ -154,13 +147,36 @@ const getQualityControlsByAdmin = async function (req, res) {
     }
 }
 
+// Get all scheduled quality controls for all clients{ admin,authToken => quality control requests }
+const getAllQualityControlsByAdmin = async function (req, res) {
+    try {
+        const controls = await QualityControl.find().populate('owner').exec();
+        res.status(200).send(controls);
+    } catch (e) {
+        res.status(400).send();
+    }
+}
+
+// Update the status of a quality control request { client,authToken , request body {status} => none }
+const validateQualityControlRequest = async function (req, res) {
+    try {
+        const status = req.body.status;
+        const updateQualityControl = await QualityControl.findByIdAndUpdate(req.params.id,
+            {status, isValidated: status === 'validated'});
+        const responseStatus = updateQualityControl ? 200 : 404;
+        res.status(responseStatus).send();
+    } catch (e) {
+        res.status(400).send();
+    }
+}
+
 // Add a training session request { client,authToken , request body {hours} => none }
 const addTrainingSessionRequest = async function (req, res) {
 
     try {
         // if the client already had training session request on hold he
         // will not be allowed to make other requests
-        const requestOnHold = await TrainingSessionRequest.findOne({clientID: req.client.clientID, isOnHold: true});
+        const requestOnHold = await TrainingSessionRequest.findOne({clientID: req.client.clientID, status: 'pending'});
         if (requestOnHold) {
             return res.status(412).send();
         }
@@ -182,23 +198,54 @@ const addTrainingSessionRequest = async function (req, res) {
 }
 
 // Get Training session requests { admin,authToken => training request }
-const getTrainingSessionRequests = async function(req,res){
-    try{
-        const trainingRequests = await TrainingSessionRequest.find({isOnHold : true});
+const getTrainingSessionRequests = async function (req, res) {
+    try {
+        // const trainingRequests = await TrainingSessionRequest.find({isOnHold : true});
+        const trainingRequests = await TrainingSessionRequest.find({});
         res.status(200).send(trainingRequests);
-    }catch (error) {
+    } catch (error) {
         res.status(400).send();
     }
 }
 
 // Set Training session requests as not in hold anymore { admin,authToken,request's ID => training request }
-const setTrainingSessionAsDone = async function(req,res){
-    try{
+const setTrainingSessionAsDone = async function (req, res) {
+    try {
         const trainingSessionRequest = await TrainingSessionRequest.findByIdAndUpdate(req.params.id,
-            {isOnHold : false});
+            {status: req.body.status, isOnHold: req.body.status !== 'validated'});
         trainingSessionRequest ? res.status(200).send() : res.status(404).send();
-    }catch (error) {
-        res.status(400).send()
+    } catch (error) {
+        res.status(400).send();
+    }
+}
+
+const deleteMaintenanceRequest = async function(req,res){
+    try{
+        const deletedRequest = await MaintenanceRequest.findByIdAndDelete(req.params.id);
+        const status = deletedRequest ? 200 : 404;
+        res.status(status).send();
+    }catch (e) {
+        res.status(400).send();
+    }
+}
+
+const deleteTrainingSession = async function(req,res){
+    try{
+        const deletedRequest = await TrainingSessionRequest.findByIdAndDelete(req.params.id);
+        const status = deletedRequest ? 200 : 404;
+        res.status(status).send();
+    }catch (e) {
+        res.status(400).send();
+    }
+}
+
+const deleteQualityControl = async function(req,res){
+    try{
+        const deletedRequest = await QualityControl.findByIdAndDelete(req.params.id);
+        const status = deletedRequest ? 200 : 404;
+        res.status(status).send();
+    }catch (e) {
+        res.status(400).send();
     }
 }
 module.exports = {
@@ -207,8 +254,13 @@ module.exports = {
     setMaintenanceRequestFixed,
     addQualityControlYears,
     getQualityControlsByClient,
-    getQualityControlsByAdmin,
+    getQualityControlsByAdminForNextDays,
+    getAllQualityControlsByAdmin,
     addTrainingSessionRequest,
     getTrainingSessionRequests,
-    setTrainingSessionAsDone
+    setTrainingSessionAsDone,
+    validateQualityControlRequest,
+    deleteMaintenanceRequest,
+    deleteQualityControl,
+    deleteTrainingSession
 };

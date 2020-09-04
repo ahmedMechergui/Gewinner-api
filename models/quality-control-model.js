@@ -6,9 +6,17 @@ const qualityControlSchema = new mongoose.Schema({
             type: Date
         }
     }],
-    isValidated : {
-        type : Boolean,
-        default : false
+    isValidated: {
+        type: Boolean,
+        default: false
+    },
+    status: {
+        type: String,
+        default: 'pending'
+    },
+    type: {
+        type : String,
+        default : 'Quality control'
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
@@ -17,7 +25,13 @@ const qualityControlSchema = new mongoose.Schema({
     },
 }, {timestamps: true});
 
+qualityControlSchema.methods.toJSON = function () {
+    const object = this.toObject();
+    object.id = object._id;
+    delete object._id;
+    delete object.__v;
+    return object;
+}
 
-// const QualityControl = mongoose.model('QualityControl', qualityControlSchema);
 const QualityControl = mongoose.model('QualityControl', qualityControlSchema);
 module.exports = QualityControl;
