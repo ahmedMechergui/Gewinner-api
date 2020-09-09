@@ -5,12 +5,39 @@ const eventSchema = new mongoose.Schema({
         type : String,
         require : true
     },
-    date : {
+    start : {
         type: Date,
-        required : true,
+        required : true
+        // index : {expires : '18h'}
+    },
+    end : {
+        type: Date,
+        required: true,
         index : {expires : '18h'}
     },
+    description : {
+        type : String,
+        default : ''
+    },
+    color : {
+        type : String,
+    },
+    dataEventColor : {
+        type : String
+    },
+    allDay : { type : Boolean}
 } , {timestamps : true});
+
+eventSchema.methods.toJSON = function () {
+const object = this.toObject();
+object.id = object._id;
+delete object._id;
+delete object.createdAt;
+delete object.updatedAt;
+delete object.__v;
+
+return object;
+}
 
 const Event = mongoose.model('Event',eventSchema);
 module.exports = Event;

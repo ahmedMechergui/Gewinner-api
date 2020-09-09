@@ -42,10 +42,14 @@ router.patch('/admin', authAdmin, manageAdminAccountController.updateAccount);
    =============================*/
 
 // Ban a client
-router.post('/banClient/:id', authAdmin, clientsManagementController.banClient);
+router.post('/banClient', authAdmin, clientsManagementController.banClient);
 
 // Add client ID
 router.post('/clientID', authAdmin, clientsManagementController.addClientID);
+
+// this route does not include authAdmin because the request is sent from an external js file
+// and adding auth to request will waste time , maybe add it later in the project
+router.get('/clients' , clientsManagementController.getAllClients);
 
 /* =============================
     Manage moovobrain orders
@@ -168,7 +172,7 @@ router.delete('/articles/:id', authAdmin, manageArticlesController.deleteArticle
    =============================*/
 
 // Add a coming event
-router.post('/events', authAdmin, manageEventsController.addEvent);
+router.post('/events', manageEventsController.addEvent);
 
 // get one coming event
 router.get('/events/:id', manageEventsController.getOneEvent);
@@ -179,7 +183,7 @@ router.get('/events/:id', manageEventsController.getOneEvent);
 router.get('/events', manageEventsController.getManyEvents);
 
 // delete coming event
-router.delete('/events/:id', authAdmin, manageEventsController.deleteEvent);
+router.delete('/events/:id', manageEventsController.deleteEvent);
 
 /* =============================
     Manage team Members

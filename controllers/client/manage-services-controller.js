@@ -100,11 +100,33 @@ const getQualityControlsByClient = async function (req, res) {
         schedules = schedules.filter((schedule) => {
             return new Date(schedule.schedule).getTime() > timeNow;
         });
+        console.log(schedules);
         res.status(200).send({schedules, isValidated});
     } catch (error) {
         res.status(400).send();
     }
 }
+
+
+
+
+const getQualityControls = async function (client) {
+    try {
+        await client.populate('qualityControl').execPopulate();
+        let schedules = client.qualityControl[0].schedules;
+        const isValidated = client.qualityControl[0].isValidated
+        const timeNow = new Date().getTime();
+        schedules = schedules.filter((schedule) => {
+            return new Date(schedule.schedule).getTime() > timeNow;
+        });
+        return schedules;
+    } catch (error) {
+        return [];
+    }
+}
+
+
+
 
 // Get scheduled quality controls for all clients for next X days{ admin,authToken => none }
 const getQualityControlsByAdminForNextDays = async function (req, res) {
@@ -262,5 +284,6 @@ module.exports = {
     validateQualityControlRequest,
     deleteMaintenanceRequest,
     deleteQualityControl,
-    deleteTrainingSession
+    deleteTrainingSession,
+    getQualityControls
 };

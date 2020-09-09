@@ -22,7 +22,7 @@ const getOneEvent = async function (req, res) {
 const getManyEvents = async function (req,res){
     try {
         const limit = req.query.limit ? +req.query.limit : undefined;
-        const events = await ComingEvent.find().limit(limit).sort({createdAt: 'asc'});
+        const events = await ComingEvent.find().limit(limit).sort({createdAt: 'desc'});
         res.status(200).send(events);
     }catch (error) {
         res.status(400).send();

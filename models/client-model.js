@@ -51,6 +51,10 @@ const clientSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    nextSchedule: {
+        type : Date,
+        default : null
+    },
     tokens: [{
         token: {
             type: String,
@@ -76,6 +80,8 @@ clientSchema.virtual('qualityControl', {
     localField: '_id',
     foreignField: 'owner'
 });
+
+
 
 // Hash password before saving a client
 clientSchema.pre('save', async function (next) {
@@ -117,7 +123,7 @@ clientSchema.methods.toJSON = function () {
     delete userObject._id;
     delete userObject.password;
     delete userObject.tokens;
-    delete userObject.isBanned;
+    // delete userObject.isBanned;
     delete userObject.__v;
     return userObject;
 }
