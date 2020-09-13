@@ -27,7 +27,7 @@ const addArticle = async function (req, res) {
     try {
         const article = new Article({...req.body, imageURL: '/images/articles/' + req.file.filename});
         await article.save();
-        res.status(200).send()
+        res.status(200).send(article);
     } catch (error) {
         res.status(400).send({error: error.toString()});
     }

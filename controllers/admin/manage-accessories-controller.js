@@ -34,7 +34,7 @@ const addAccessorie = async function (req, res) {
         }
         const accessorie = new Accessorie({...req.body, imageURL});
         await accessorie.save();
-        res.status(200).send();
+        res.status(200).send(accessorie);
     } catch (error) {
         res.status(400).send({error: error.toString()});
     }

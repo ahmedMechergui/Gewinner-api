@@ -19,12 +19,12 @@ const getOneEvent = async function (req, res) {
     }
 }
 
-const getManyEvents = async function (req,res){
+const getManyEvents = async function (req, res) {
     try {
         const limit = req.query.limit ? +req.query.limit : undefined;
         const events = await ComingEvent.find().limit(limit).sort({createdAt: 'desc'});
         res.status(200).send(events);
-    }catch (error) {
+    } catch (error) {
         res.status(400).send();
     }
 }
@@ -38,4 +38,15 @@ const deleteEvent = async function (req, res) {
     }
 }
 
-module.exports = {addEvent,getOneEvent,getManyEvents,deleteEvent}
+const updateEvent = async function (req, res) {
+    try {
+        console.log(req.body);
+        const updatedEvent = await ComingEvent.findByIdAndUpdate(req.params.id, req.body);
+        const status = updatedEvent ? 200 : 404;
+        res.status(status).send();
+    }catch (e) {
+        res.status(400).send();
+    }
+}
+
+module.exports = {addEvent, getOneEvent, getManyEvents, deleteEvent , updateEvent}

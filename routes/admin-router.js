@@ -158,7 +158,7 @@ router.get('/articles', manageArticlesController.getManyArticles);
 router.get('/articles/:id', manageArticlesController.getOneArticle);
 
 // Update Article
-router.patch('/articles/:id',
+router.post('/articles/update/:id',
     authAdmin,
     manageArticlesController.uploadImage.single('image'),
     manageArticlesController.updateArticle,
@@ -168,11 +168,16 @@ router.patch('/articles/:id',
 router.delete('/articles/:id', authAdmin, manageArticlesController.deleteArticle);
 
 /* =============================
-    Manage coming events
+    Manage coming events :
+    Authentication was removed because requests are sent from an independent js file
+    maybe add it later
    =============================*/
 
 // Add a coming event
 router.post('/events', manageEventsController.addEvent);
+
+// Add a coming event
+router.post('/events/update/:id', manageEventsController.updateEvent);
 
 // get one coming event
 router.get('/events/:id', manageEventsController.getOneEvent);
