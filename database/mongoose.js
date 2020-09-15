@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const databaseURI =  'mongodb://127.0.0.1:27017/gewinner-api'
 // connecting to database
-mongoose.connect('mongodb://127.0.0.1:27017/gewinner-api', {
+mongoose.connect(process.env.DATABASE_URI, {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useUnifiedTopology: true
 }).then(() => {
     console.log('Connected to database successfully');
 }).catch(() => {

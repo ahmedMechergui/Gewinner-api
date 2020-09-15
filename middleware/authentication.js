@@ -6,7 +6,7 @@ const Admin = require('../models/admin-model');
 const authClient = async function (req, res, next) {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
-        const decode = await jwt.verify(token, '9ar9ouch');
+        const decode = await jwt.verify(token, process.env.AUTH_SECRET_KEY);
         const client = await Client.findOne({_id: decode.id, 'tokens.token': token});
         if (client && !client.isBanned) {
             req.client = client;
@@ -23,7 +23,7 @@ const authClient = async function (req, res, next) {
 const authAdmin = async function (req, res, next) {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
-        const decode = await jwt.verify(token, '9ar9ouch');
+        const decode = await jwt.verify(token, process.env.AUTH_SECRET_KEY);
         const admin = await Admin.findOne({_id: decode.id, 'tokens.token': token});
         if (admin){
             req.admin = admin;

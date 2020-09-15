@@ -110,7 +110,7 @@ clientSchema.statics.findByCredentials = async function (email, password) {
 clientSchema.methods.generateAuthToken = async function () {
     const client = this;
     try {
-        return await jwt.sign({id: client.id}, '9ar9ouch');
+        return await jwt.sign({id: client.id}, process.env.AUTH_SECRET_KEY);
     } catch (error) {
         return {error: 'Unable to generate authentication token!'}
     }

@@ -7,6 +7,10 @@
 node_modules
 node_modules/
 
+/config
+config
+config/
+
 
 # IDEs and editors
 /.idea

@@ -49,7 +49,7 @@ adminSchema.pre('save', async function (next) {
 adminSchema.methods.generateAuthToken = async function () {
     const admin = this;
     try {
-        const token = await jwt.sign({id: admin.id}, '9ar9ouch', {expiresIn: '365d'})
+        const token = await jwt.sign({id: admin.id}, process.env.AUTH_SECRET_KEY);
         return token;
     } catch (error) {
         return {error: 'Unable to generate authentication token!'}
