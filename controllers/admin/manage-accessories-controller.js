@@ -68,11 +68,10 @@ const getAllAccessories = async function (req, res) {
 
             // update last month orders
             const dateLastMonth = new Date(new Date().getTime() - (30 * 24 * 3600000));
-            const count = await AccessorieOrder.countDocuments({
+            accessorie.ordersThisMonth = await AccessorieOrder.countDocuments({
                 accessorieID: accessorie._id,
                 "createdAt": {"$gte": dateLastMonth}
             });
-            accessorie.ordersThisMonth = count;
         }
 
         res.status(200).send(accessories);
