@@ -7,7 +7,7 @@ const addContactUs = async function (req, res) {
         await contactUs.save();
         res.status(200).send();
     } catch (error) {
-        res.status(400).send('done');
+        res.status(400).send();
     }
 }
 
