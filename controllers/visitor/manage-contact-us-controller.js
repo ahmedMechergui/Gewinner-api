@@ -1,9 +1,11 @@
 const ContactUs = require('../../models/contact-us-model');
+const emailSender = require('../../emails/contact-us-email');
 
 // add a contact us form  { contact us body => none }
 const addContactUs = async function (req, res) {
     try {
         const contactUs = new ContactUs(req.body);
+        await emailSender.send(req.body);
         await contactUs.save();
         res.status(200).send();
     } catch (error) {
@@ -23,12 +25,12 @@ const getAllContactUs = async function (req, res) {
 
 // delete a contact us message { admin , authToken => none }
 const deleteContactUsMessage = async function (req, res) {
-    try{
+    try {
         const deletedMessage = await ContactUs.findByIdAndDelete(req.params.id);
         deletedMessage ? res.status(200).send() : res.status(404).send();
-    }catch (error) {
+    } catch (error) {
         res.status(400).send();
     }
 }
 
-module.exports = {addContactUs, getAllContactUs , deleteContactUsMessage};
+module.exports = {addContactUs, getAllContactUs, deleteContactUsMessage};

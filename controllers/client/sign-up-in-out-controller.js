@@ -33,7 +33,6 @@ const signIn = async function (req, res) {
         await client.updateOne({tokens: client.tokens});
         res.status(200).send({client, token});
     } catch (error) {
-        console.log(error)
         res.status(400).send({error: error.toString().replace('Error: ', '')});
     }
 };

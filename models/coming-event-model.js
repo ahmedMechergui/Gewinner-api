@@ -8,7 +8,6 @@ const eventSchema = new mongoose.Schema({
     start : {
         type: Date,
         required : true
-        // index : {expires : '18h'}
     },
     end : {
         type: Date,

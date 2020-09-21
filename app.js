@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require('./info');
 
+// require('./emails/reset-password-email');
+
 require('./database/mongoose');
 const clientRouter = require('./routes/client-router');
 const adminRouter = require('./routes/admin-router');

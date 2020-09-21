@@ -60,7 +60,11 @@ const clientSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    resetPasswordID : {
+        type : String,
+        default : null
+    }
 }, {timestamps: true});
 
 clientSchema.virtual('feedback', {
@@ -123,7 +127,7 @@ clientSchema.methods.toJSON = function () {
     delete userObject._id;
     delete userObject.password;
     delete userObject.tokens;
-    // delete userObject.isBanned;
+    delete userObject.resetPasswordID;
     delete userObject.__v;
     return userObject;
 }

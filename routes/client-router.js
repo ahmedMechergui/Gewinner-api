@@ -22,6 +22,11 @@ router.post('/clients', signController.signUp);
 // Sign out a client
 router.post('/clients/logout', authClient, signController.signOut);
 
+// Send reset password email
+router.post('/clients/reset',manageAccountController.sendResetPasswordEmail);
+
+// Reset password
+router.get('/clients/reset/:id',manageAccountController.resetPassword);
 
 /* =============================
     Manage account
