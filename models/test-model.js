@@ -31,7 +31,8 @@ const testSchema = new mongoose.Schema({
         type: String,
         required: true,
         lowercase: true,
-        trim: true
+        trim: true,
+        enum : ['tunisia']
     },
     phone: {
         type: String,

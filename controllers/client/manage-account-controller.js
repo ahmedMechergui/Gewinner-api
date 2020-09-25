@@ -52,7 +52,7 @@ const updateAccount = async function (req, res) {
     }
 }
 
-// when client writes his email and clicks send email , we send him an email
+// when client writes his email and clicks send email , we send him an email { email address => reset email sent  }
 const sendResetPasswordEmail = async function (req, res) {
     try {
         const client = await Client.findOne({email: req.body.email});
@@ -68,6 +68,8 @@ const sendResetPasswordEmail = async function (req, res) {
     }
 }
 
+// Generate a new password and send it to the client when he clicks the link in the reset email
+// {resetPasswordID => new password}
 const resetPassword = async function (req,res) {
     try{
         const newPassword = Math.random().toString(36).substring(5);
@@ -75,7 +77,6 @@ const resetPassword = async function (req,res) {
         if (!updatedClient || updatedClient.resetPasswordID === null){return res.status(404).send()}
         const newPasswordHashed = await bcrypt.hash(newPassword, 8);
         updatedClient.resetPasswordID = null;
-        // await updatedClient.save();
         await Client.findByIdAndUpdate(updatedClient._id,
             {password : newPasswordHashed,resetPasswordID : null},{new:true});
         res.status(200).send({newPassword});
