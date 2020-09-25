@@ -2,10 +2,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
+
 require('./info');
-
-// require('./emails/reset-password-email');
-
 require('./database/mongoose');
 const clientRouter = require('./routes/client-router');
 const adminRouter = require('./routes/admin-router');
@@ -13,7 +12,7 @@ const visitorRouter = require('./routes/visitor-router');
 const port = process.env.PORT || 3000;
 const app = express();
 app.use(logger('dev'));
-
+app.use(cors());
 
 
 app.use(express.json());
