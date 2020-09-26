@@ -31,7 +31,8 @@ const send = async function (mail) {
 // send({
 //     subject: 'this is the subject',
 //     template: '<h1>This is the email text from gewinner API</h1>',
-//     to: 'ahmed.michrgui@hotmail.fr'
+//     to: 'ahmed.michrgui@hotmail.fr',
+//     from : 'lorem@gmail.com'
 // }).then();
 
 module.exports = {send};

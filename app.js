@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
+require('./emails/moovobrain-orders-email');
+
 require('./info');
 require('./database/mongoose');
 const clientRouter = require('./routes/client-router');
