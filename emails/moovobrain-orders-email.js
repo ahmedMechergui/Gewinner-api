@@ -10,7 +10,7 @@ const send = function (order) {
 1- Transfer money to the following bank account number mentioned in the transfer form.<br>
 2- After transferring the money please attach slip and fill in transfer date and time.
 <br><br>
-Your order will be confirmed after bank transfer transaction using this <a href="${process.env.WEBSITE_URL}/confirm-moovobrain-order/${order._id}">link</a>.
+Your order will be confirmed after bank transfer transaction using this <a href="${process.env.WEBSITE_URL}/moovobrain-payment/${order._id}">link</a>.
 <br>
 please perform payment and confirm withing two week from now. otherwise , this order will be cancelled automatically.
 <br>
