@@ -14,6 +14,15 @@ router.post('/tests', manageTestApplications.applyForTest);
 // Order moovobrain
 router.post('/moovobrain' , manageMoovobrainOrdersController.addMoovobrainOrder)
 
+// Moovobrain payment
+router.post('/moovobrain-payment',
+    manageMoovobrainOrdersController.upload.single('payment-slip'),
+    manageMoovobrainOrdersController.attachPaymentSlip,
+    manageMoovobrainOrdersController.uploadErrorCatcher);
+
+// get moovobrain order
+router.post('/moovobrain-one-order',manageMoovobrainOrdersController.getOneOrder);
+
 // (Join us) apply for job/internship
 router.post('/join-us',
     joinUsController.upload.single('cv'),

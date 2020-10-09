@@ -3,12 +3,16 @@ const validator = require('validator').default;
 const orderSchema = new mongoose.Schema({
     status: {
         type: String,
-        default: 'pending',
-        enum: ['pending', 'rejected', 'delivered']
+        default: 'submitted',
+        enum: ['submitted', 'pending', 'rejected', 'validated']
     },
     price: {
         type: Number,
         default : 15000
+    },
+    paymentSlipURL: {
+        type: String,
+        default: null
     },
 //  Wheelchair
     steeringSystem: {
