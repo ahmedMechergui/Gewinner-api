@@ -6,16 +6,15 @@ const TrainingSessionRequest = require('../../models/training-session-request-mo
 
 // Post a maintenance request { client,authToken => none }
 const addMaintenanceRequest = async function (req, res) {
-    const owner = req.client._id;
-
-    // if the client already had training session request on hold he
+    const clientID = req.client._id;
+    // if the client already has maintenance request on hold he
     // will not be allowed to make other requests
-    const requestOnHold = await MaintenanceRequest.findOne({clientID: owner.clientID, status: 'pending'});
+    const requestOnHold = await MaintenanceRequest.findOne({owner: clientID, status: 'pending'});
     if (requestOnHold) {
         return res.status(412).send();
     }
 
-    const maintenanceRequest = new MaintenanceRequest({owner});
+    const maintenanceRequest = new MaintenanceRequest({owner:clientID});
     try {
         await maintenanceRequest.save();
         res.status(200).send();
