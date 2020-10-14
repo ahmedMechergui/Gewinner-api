@@ -22,8 +22,6 @@ const send = async function (mail) {
            html: mail.template,
        });
    }catch (e) {
-       console.log(process.env.EMAIL_ADDRESS);
-       console.log(e)
        throw new Error();
    }
 
