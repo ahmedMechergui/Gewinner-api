@@ -16,12 +16,14 @@ let transporter =  nodemailer.createTransport({
 const send = async function (mail) {
    try{
        await transporter.sendMail({
-           from: (mail.from || 'Gewinner team') + '<loremipsum789546@outlook.com>',
+           from: (mail.from || 'Gewinner team') + '<'+process.env.EMAIL_ADDRESS+'>',
            to: mail.to,
            subject: mail.subject,
            html: mail.template,
        });
    }catch (e) {
+       console.log(process.env.EMAIL_ADDRESS);
+       console.log(e)
        throw new Error();
    }
 

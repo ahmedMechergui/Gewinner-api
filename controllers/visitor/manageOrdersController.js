@@ -55,6 +55,7 @@ const addMoovobrainOrder = async function (req, res) {
         await emailSender.send(order);
         res.status(200).send();
     } catch (error) {
+        console.log(error);
         res.status(400).send();
     }
 }
