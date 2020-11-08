@@ -27,7 +27,9 @@ const addAccessorie = async function (req, res) {
     try {
         const imageURL = [];
         req.files.forEach(file => {
+            console.log("before : "+file.path);
             imageURL.push(file.path.replace('public\\', '/'));
+            console.log("after : "+file.path.replace('public\\', '\\'));
         });
         if (req.body.availableQuantity == 'null'){
             req.body.availableQuantity = Infinity;
