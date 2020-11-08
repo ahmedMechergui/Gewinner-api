@@ -50,9 +50,10 @@ const attachPaymentSlip = async function (req, res) {
 const addMoovobrainOrder = async function (req, res) {
     const order = new Order(req.body);
     try {
-        await order.save();
         // sending confirmation email
         await emailSender.send(order);
+
+        await order.save();
         res.status(200).send();
     } catch (error) {
         res.status(400).send();

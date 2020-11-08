@@ -73,7 +73,6 @@ const getAllAccessories = async function (req, res) {
                 "createdAt": {"$gte": dateLastMonth}
             });
         }
-
         res.status(200).send(accessories);
     } catch (error) {
         res.status(500).send();
@@ -137,7 +136,6 @@ const addAccessorieOrder = async function (req, res) {
     } catch (e) {
         res.status(400).send(e);
     }
-    console.log(req.body)
 }
 
 // Get all accessories orders {admin , authToken => accessories orders }

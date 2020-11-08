@@ -22,6 +22,7 @@ const send = async function (mail) {
            html: mail.template,
        });
    }catch (e) {
+       console.log(e)
        throw new Error();
    }
 

@@ -122,6 +122,7 @@ const orderSchema = new mongoose.Schema({
     },
     iHandicap: {
         type: String,
+        default:'Not specified',
         trim: true
     },
 //  Organisation form
