@@ -1,14 +1,35 @@
 const mongoose = require('mongoose');
 const validator = require('validator').default;
 const orderSchema = new mongoose.Schema({
+    mode : {
+        type : String,
+        enum : ['voice','brain'],
+        default : 'voice'
+    },
     status: {
         type: String,
         default: 'submitted',
-        enum: ['submitted', 'pending', 'rejected', 'validated']
+        enum: ['submitted', 'pending', 'rejected', 'validated','pre-ordered']
     },
-    price: {
+    pricePurchase: {
         type: Number,
-        default : 15000
+        default: 0
+    },
+    priceShipping: {
+        type: Number,
+        default: 0
+    },
+    priceTaxes: {
+        type: Number,
+        default: 0
+    },
+    priceTotal: {
+        type: Number,
+        default: 0
+    },
+    quantity : {
+        type: Number,
+        default: 1
     },
     paymentSlipURL: {
         type: String,
@@ -122,7 +143,7 @@ const orderSchema = new mongoose.Schema({
     },
     iHandicap: {
         type: String,
-        default:'Not specified',
+        default: 'Not specified',
         trim: true
     },
 //  Organisation form

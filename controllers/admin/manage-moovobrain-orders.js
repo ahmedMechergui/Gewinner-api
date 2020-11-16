@@ -1,4 +1,5 @@
 const Order = require('../../models/order-model');
+const emailSender = require('../../emails/moovobrain-orders-email');
 
 // Get all orders  { admin,authToken => orders array }
 const getAllOrders = async function (req, res) {
@@ -22,6 +23,26 @@ const updateOrderStatus = async function (req, res) {
     }
 }
 
+// validate order  { admin,authToken, order ID , {priceShipping , priceTaxes} => none }
+const validateOrder = async function (req, res) {
+    try {
+        const validatedOrder = await Order.findByIdAndUpdate(req.params.id, {
+            status: 'validated',
+            priceShipping: req.body.priceShipping,
+            priceTaxes: req.body.priceTaxes
+        });
+        const status = validatedOrder ? 200 : 404;
+        if (status === 200) {
+            validatedOrder.priceTotal = req.body.priceShipping + req.body.priceTaxes + validatedOrder.pricePurchase;
+            await emailSender.send(validatedOrder);
+            await validatedOrder.save();
+        }
+        res.status(status).send();
+    } catch (e) {
+        res.status(400).send();
+    }
+}
+
 const deleteOrder = async function (req, res) {
     try {
         const deletedOrder = await Order.findByIdAndDelete(req.params.id);
@@ -32,4 +53,4 @@ const deleteOrder = async function (req, res) {
     }
 }
 
-module.exports = {getAllOrders, updateOrderStatus, deleteOrder}
+module.exports = {getAllOrders, updateOrderStatus, deleteOrder, validateOrder}

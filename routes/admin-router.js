@@ -61,6 +61,9 @@ router.get('/moovobrain',authAdmin , manageMoovobrainOrders.getAllOrders);
 // Update moovobrain order status
 router.post('/moovobrain/:id',authAdmin , manageMoovobrainOrders.updateOrderStatus);
 
+// Validate moovobrain order
+router.post('/moovobrain-validate/:id',authAdmin ,manageMoovobrainOrders.validateOrder)
+
 // Remove moovobrain order
 router.delete('/moovobrain/:id',authAdmin,manageMoovobrainOrders.deleteOrder);
 /* =============================
