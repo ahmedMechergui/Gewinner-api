@@ -1,15 +1,23 @@
+/*=======================================================================
+  This model is still setup on the old version of orders
+  i didn't bother editing it because orders are now shown on a
+  static way in dashboard.
+  if you ever edit it set it up to the the new moovobrain options
+  =======================================================================*/
+
+
 const mongoose = require('mongoose');
 const validator = require('validator').default;
 const orderSchema = new mongoose.Schema({
-    mode : {
-        type : String,
-        enum : ['voice','brain'],
-        default : 'voice'
+    mode: {
+        type: String,
+        enum: ['voice', 'brain'],
+        default: 'voice'
     },
     status: {
         type: String,
         default: 'submitted',
-        enum: ['submitted', 'pending', 'rejected', 'validated','pre-ordered']
+        enum: ['submitted', 'pending', 'rejected', 'validated', 'pre-ordered']
     },
     pricePurchase: {
         type: Number,
@@ -27,7 +35,7 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    quantity : {
+    quantity: {
         type: Number,
         default: 1
     },
