@@ -21,6 +21,9 @@ have a nice day , Gewinner.
     return mailer.send(email);
 }
 
+/*
+   Use the function below to test emails
+ */
 
 // send({email : 'ahmed.michrgui@hotmail.fr'}).then(() => {
 //     console.log('email sent');

@@ -35,10 +35,16 @@ www.gewinner.tn
 }
 
 const createdAt = new Date();
-send({iEmail : 'ahmed.michrgui@hotmail.fr' , name : 'Ahmed' , createdAt }).then(() => {
-    console.log('email sent');
-}).catch((error) => {
-    console.log(error);
-});
+
+
+/*
+   Use the function below to test emails
+ */
+
+// send({iEmail : 'ahmed.michrgui@hotmail.fr' , name : 'Ahmed' , createdAt }).then(() => {
+//     console.log('email sent');
+// }).catch((error) => {
+//     console.log(error);
+// });
 
 module.exports = {send};
