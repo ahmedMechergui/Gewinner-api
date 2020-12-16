@@ -1,5 +1,5 @@
 /*=======================================================================
-  This model is still setup on the old version of orders
+  This model is still setup for the old version of orders
   i didn't bother editing it because orders are now shown on a
   static way in dashboard.
   if you ever edit it set it up to the the new moovobrain options
