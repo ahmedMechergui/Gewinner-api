@@ -33,23 +33,23 @@ app.use(clientRouter);
 app.use(adminRouter);
 app.use(visitorRouter);
 
-// app.listen(PORT);
+app.listen(PORT);
 
 /* ===============================
  # SSL configuration
    ===============================*/
 
-const sslOptions = {
-
-    key: fs.readFileSync('ssl-certif/private.key'),
-    cert: fs.readFileSync('ssl-certif/certificate.crt'),
-
-    ca: [
-        fs.readFileSync('ssl-certif/ca_bundle.crt')
-    ]
-};
-
-
-const httpsServer = https.createServer(sslOptions, app);
-
-httpsServer.listen(+PORT);
+// const sslOptions = {
+//
+//     key: fs.readFileSync('ssl-certif/private.key'),
+//     cert: fs.readFileSync('ssl-certif/certificate.crt'),
+//
+//     ca: [
+//         fs.readFileSync('ssl-certif/ca_bundle.crt')
+//     ]
+// };
+//
+//
+// const httpsServer = https.createServer(sslOptions, app);
+//
+// httpsServer.listen(+PORT);
