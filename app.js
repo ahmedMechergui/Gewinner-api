@@ -13,7 +13,7 @@ require('./database/mongoose');
 const clientRouter = require('./routes/client-router');
 const adminRouter = require('./routes/admin-router');
 const visitorRouter = require('./routes/visitor-router');
-const PORT = process.env.PORT || 443;
+const PORT = process.env.PORT || 80;
 const app = express();
 app.use(logger('dev'));
 app.use(cors());
