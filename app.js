@@ -13,7 +13,7 @@ require('./database/mongoose');
 const clientRouter = require('./routes/client-router');
 const adminRouter = require('./routes/admin-router');
 const visitorRouter = require('./routes/visitor-router');
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(logger('dev'));
 app.use(cors());
@@ -33,23 +33,23 @@ app.use(clientRouter);
 app.use(adminRouter);
 app.use(visitorRouter);
 
-app.listen(PORT);
+// app.listen(PORT);
 
 /* ===============================
  # SSL configuration
    ===============================*/
 
-// const sslOptions = {
-//
-//     key: fs.readFileSync('ssl-certif/private.key'),
-//     cert: fs.readFileSync('ssl-certif/certificate.crt'),
-//
-//     ca: [
-//         fs.readFileSync('ssl-certif/ca_bundle.crt')
-//     ]
-// };
-//
-//
-// const httpsServer = https.createServer(sslOptions, app);
-//
-// httpsServer.listen(+PORT);
+const sslOptions = {
+
+    key: fs.readFileSync('ssl-certif/private.key'),
+    cert: fs.readFileSync('ssl-certif/certificate.crt'),
+
+    ca: [
+        fs.readFileSync('ssl-certif/ca_bundle.crt')
+    ]
+};
+
+
+const httpsServer = https.createServer(sslOptions, app);
+
+httpsServer.listen(+PORT);
