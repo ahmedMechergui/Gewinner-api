@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "env-cmd -f config/dev.env pm2 start app.js",
-    "start-env": "env-cmd -f config/dev.env node app.js",
+    "start": "env-cmd -f config/dev.env node app.js",
+    "start-forever": "env-cmd -f config/dev.env forever start app.js",
+    "start-pm2": "env-cmd -f config/dev.env pm2 start app.js",
     "dev": "env-cmd -f config/dev.env nodemon app.js"
   },
   "dependencies": {
