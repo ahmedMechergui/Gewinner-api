@@ -25,7 +25,7 @@ have a nice day , Gewinner.
    Use the function below to test emails
  */
 
-// send({email : 'ahmed.michrgui@hotmail.fr'}).then(() => {
+// send({iEmail : 'ahmed.michrgui@hotmail.fr'}).then(() => {
 //     console.log('email sent');
 // }).catch((error) => {
 //     console.log(error);
