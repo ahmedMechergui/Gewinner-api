@@ -61,7 +61,7 @@ const addMoovobrainOrder = async function (req, res) {
             for now emails are sent once the user pre-orders from the website since there
             is no actual product to make orders
 
-            if you are about to make orders , there and email already written,implemented
+            if you are about to make orders , their code and email already written,implemented
              and ready to be used , and the payment system is fully implemented is the three
              projects (gewinner website , dashboard , API) since the payment was used before
              we go with the pre-order instead of orders
@@ -71,7 +71,7 @@ const addMoovobrainOrder = async function (req, res) {
 
         res.status(200).send();
     } catch (error) {
-        res.status(400).send();
+        res.status(400).send(error);
     }
 }
 
