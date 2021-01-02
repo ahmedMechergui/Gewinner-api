@@ -23,9 +23,6 @@ Smart Tunisian Technoparks, Ariana, Tunisia
 <br>
 +21650503198 / +21626772923
 <br>
-
-contact@gewinner.tn 
-<br>
 www.gewinner.tn
 </span>
 </p>
