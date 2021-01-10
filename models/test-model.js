@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const validator = require('validator').default;
 
 const testSchema = new mongoose.Schema({
+    mode: {
+        type: String,
+        enum : ['voice','brain'],
+        default: 'voice'
+    },
     name: {
         type: String,
         required: true,

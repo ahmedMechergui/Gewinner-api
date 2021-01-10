@@ -4,6 +4,7 @@ const Test = require('../../models/test-model');
 // Apply for test  { test application => none }
 const applyForTest = function (req, res) {
     const test = new Test(req.body);
+    console.log(test);
     test.save().then(() => {
         res.status(200).send()
     }).catch((error) => {
