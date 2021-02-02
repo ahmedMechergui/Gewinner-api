@@ -7,8 +7,8 @@
 node_modules
 node_modules/
 
-# this is pushed for now since i don't know to declare envirement variables in our vps
-#config/
+# this is pushed on prod for now since there is no env variables in our vps
+config/
 
 
 # IDEs and editors
@@ -19,3 +19,4 @@ node_modules/
 *.launch
 .settings/
 *.sublime-workspace
+
